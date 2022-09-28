@@ -1,4 +1,4 @@
-const host = "http://localhost:5000";
+const host = "https://user-chat-vikku.herokuapp.com";
 const loginRoute = `${host}/api/auth/login`;
 const allUsersRoute = `${host}/api/auth/allusers`;
 const sendMessageRoute = `${host}/api/messages/`;
