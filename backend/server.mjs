@@ -23,7 +23,7 @@ app.use("/api/messages", messagesRoutes);
 
 await connection();
 
-const server = app.listen(process.env.PORT, () => {
+const server = app.listen(5000, () => {
 	console.log('Listening on http://localhost:5000');
 });
 
@@ -48,5 +48,3 @@ io.on("connection", (socket) => {
 		}
 	});
 });
-
-

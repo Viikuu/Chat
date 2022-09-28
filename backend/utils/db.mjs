@@ -1,10 +1,8 @@
 import process from 'node:process';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 
 async function connection() {
 	try {
-		dotenv.config();
 		await mongoose.connect(process.env.MONGO_URL, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,

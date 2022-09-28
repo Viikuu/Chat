@@ -1,7 +1,5 @@
-import styled from 'styled-components';
-import {Link, useNavigate} from 'react-router-dom';
-import Logo from '../assets/logo.png'
-import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useState, useEffect} from 'react';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -10,8 +8,7 @@ import {loginRoute} from '../utils/APIRoutes';
 export function Login() {
 	const navigate = useNavigate();
 	const [values, setValues] = useState({
-		username: '',
-		password: '',
+		name: '',
 	});
 
 	const toastOptions = {
@@ -22,13 +19,19 @@ export function Login() {
 		theme: 'dark'
 	};
 
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('user'));
+		if (user !== null) {
+			navigate('/');
+		}
+	}, [navigate]);
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		if(handleValidation()){
-			const {password, username} = values;
+			const {name} = values;
 			const {data} = await axios.post(loginRoute, JSON.stringify({
-				username,
-				password,
+				name,
 			}), {
 				headers: {
 					"Content-Type": "application/json",
@@ -38,7 +41,7 @@ export function Login() {
 				toast.error(data.message,toastOptions);
 			}
 			if(data.status === true) {
-				localStorage.setItem('chat-app-user', JSON.stringify(data.user));
+				localStorage.setItem('user', JSON.stringify(name));
 				navigate('/');
 			}
 		}
@@ -46,12 +49,9 @@ export function Login() {
 	};
 
 	const handleValidation = () => {
-		const {password, username} = values;
-		if (password === "") {
-			toast.error('password and username is required', toastOptions);
-			return false;
-		} else if (username.length === "") {
-			toast.error('password and username is required', toastOptions);
+		const {name} = values;
+		if (name.length === "") {
+			toast.error('name is required', toastOptions);
 			return false;
 		}
 		else {
@@ -62,33 +62,25 @@ export function Login() {
 	const handleChange = (event) => {
 		setValues({...values, [event.target.name]: event.target.value});
 	};
+
 	return (
 		<>
-			<FormContainer>
-				<form onSubmit={handleSubmit}>
-					<div className="form-brand">
-						<img src={Logo} alt="logo"/>
-						<h1>Hi</h1>
+			<div className={"h-screen w-screen flex flex-col justify-center gap-1 items-center bg-gray-800"}>
+				<form onSubmit={handleSubmit} className={"flex flex-col content-center gap-8 items-center bg-gray-900 py-12 px-20"}>
+					<div className="flex justify-center gap-1 items-center">
+						<h1 className={"text-white uppercase"}>Login</h1>
 					</div>
 					<input
+						className={"bg-transparent p-4 border-2 border-purple-600 text-white rounded-2xl border-solid focus:border-2 focus:border-solid focus:border-purple-400 focus:outline-none"}
 						type="text"
-						placeholder="Username"
-						name="username"
-						onChange={(event) => handleChange(event)}
-						min="3"
-					/>
-					<input
-						type="password"
-						placeholder="Password"
-						name="password"
+						placeholder="Name"
+						name="name"
 						onChange={(event) => handleChange(event)}
 					/>
-					<button type="submit">Login</button>
-					<span>
-					Don't have an account? <Link to={'/register'}>Register</Link>
-				</span>
+					<button type="submit" className={"bg-purple-600 text-white py-4 px-8 border-none font-bold cursor-pointer text-xl uppercase hover:bg-violet-900"}>Login</button>
+
 				</form>
-			</FormContainer>
+			</div>
 			<ToastContainer/>
 		</>
 	)
