@@ -1,8 +1,8 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Simple realtime chat api",
-  "main": "index.js",
+  "description": "Simple realtime user chat api",
+  "main": "server.mjs",
   "scripts": {
     "start": "node server.mjs"
   },
