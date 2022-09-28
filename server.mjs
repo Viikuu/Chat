@@ -12,7 +12,7 @@ const app = express();
 dotenv.config();
 
 app.use(cors({
-	origin:"http://localhost:3000",
+	origin:"https://user-chat-viiku.vercel.app",
 	credentials: true,
 }));
 app.use(express.json());
@@ -23,13 +23,11 @@ app.use("/api/messages", messagesRoutes);
 
 await connection();
 
-const server = app.listen(5000, () => {
-	console.log('Listening on http://localhost:5000');
-});
+const server = app.listen(5000);
 
 const io = new Server(server, {
 	cors:{
-		origin:"http://localhost:3000",
+		origin:"https://user-chat-viiku.vercel.app",
 		credentials: true,
 	},
 });
